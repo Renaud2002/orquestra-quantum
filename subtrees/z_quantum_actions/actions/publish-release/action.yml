@@ -21,9 +21,19 @@ runs:
     - name: Get next version
       id: get-next-version
       shell: bash
-      # Inputs: none
+      # Inputs: library name – we assume it's the same as repository name
       # Outputs: `next_version` - a bumped semver string of form "major.minor.patch"
-      run: python3 subtrees/z_quantum_actions/bin/get_next_version.py
+      run: |
+        sudo apt update
+        sudo apt install -y python3-pip
+        make install
+        python3 subtrees/z_quantum_actions/bin/get_next_version.py ${INPUT_PACKAGE_NAME}
+      # run: sudo apt update && sudo apt install -y python3-pip && make install && python3 subtrees/z_quantum_actions/bin/get_next_version.py ${{ github.event.repository.name }}
+      # TODO: check if we can remove sudo apts
+      # run: sudo apt update && sudo apt install -y python3-pip && make install && python3 subtrees/z_quantum_actions/bin/get_next_version.py orquestra-quantum
+      with:
+        package_name: ${{ github.event.repository.name }}
+
 
     - name: Push new version tag
       id: push-new-version-tag
