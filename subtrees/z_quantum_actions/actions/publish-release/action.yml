@@ -26,9 +26,9 @@ runs:
       run: |
         make install
         python3 subtrees/z_quantum_actions/bin/get_next_version.py "${{ github.event.repository.name }}"
-      # run: sudo apt update && sudo apt install -y python3-pip && make install && python3 subtrees/z_quantum_actions/bin/get_next_version.py ${{ github.event.repository.name }}
-      # TODO: check if we can remove sudo apts
-      # run: sudo apt update && sudo apt install -y python3-pip && make install && python3 subtrees/z_quantum_actions/bin/get_next_version.py orquestra-quantum
+      # This is needed if we work on the private repositories, doesn't bother us otherwise though
+      env:
+        SSH_AUTH_SOCK: /tmp/ssh_agent.sock
 
     - name: Push new version tag
       id: push-new-version-tag
